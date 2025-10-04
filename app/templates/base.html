@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    {% block styles %}
+    <!-- Custom CSS for each page-->
+    {% endblock %}
+
+    {%block head %}
+    <!-- Default title if none is provided -->
+    <title>Xenovault</title>
+    {% endblock %}
+</head>
+
+
+
+<body>
+
+    <nav class="container_navbar">
+        <div class="menu_container" id="menu_container">
+        <p>&#9776;</p>
+        </div> 
+
+        <div class="photo">
+            <a href="{{url_for('main.index')}}"><img src="../static/images/navbar_logo.png"></a>
+        </div>
+        <h1 class="mainText"><a href="{{url_for('main.index')}}">THE XENOVAULT</a></h1>
+        <table class="navLinks">
+            <tr>
+                <th> <a href="{{url_for('main.index')}}">Home</a></th>
+                <th> <a href="{{url_for('main.information')}}">About</a></th>
+                <th> <a href="{{url_for('main.species')}}">Species</a></th>
+            </tr>
+        </table>
+
+    </nav>
+
+    <div class="sidebar" id = "sidebar">
+        <ul>
+            <li>
+                <img src="../static/images/incons/home.png" alt="home.png">
+                <a href="{{url_for('main.index')}}">Home</a>
+
+            </li>
+            <li>
+                <img src="../static/images/incons/question.png" alt="question.png">
+                <a href="{{url_for('main.information')}}">About</a>
+            </li>
+            <li>
+                <img src="../static/images/incons/bank.png" alt="bank.png">
+                <a href="{{url_for('main.species')}}">Species</a>
+            </li>
+
+        </ul>
+    </div>
+
+    {% block app_pagecontent %}
+    {% endblock %}
+
+
+
+
+    <script src="../static/js/navbar.js"></script>
+</body>
+
+</html>

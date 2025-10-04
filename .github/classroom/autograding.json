@@ -1,0 +1,34 @@
+{
+    "tests": [
+        {
+            "name": "Check Flask app structure",
+            "setup": "echo Setup complete",
+            "run": "test -f app/__init__.py && test -f run.py && test -f app/routes.py",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 3
+        },
+        {
+            "name": "Check blueprint route function exists (single or double quotes)",
+            "setup": "echo Setup complete",
+            "run": "grep -Eq \"@main\\.route\\(['\\\"]\\/\" app/routes.py",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 2
+        },
+        {
+            "name": "Flask factory pattern test",
+            "setup": "pip install flask",
+            "run": "python -c \"from app import create_app; app = create_app(); print(app.name)\"",
+            "input": "",
+            "output": "",
+            "comparison": "contains",
+            "timeout": 10,
+            "points": 2
+        }
+    ]
+}
