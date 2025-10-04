@@ -1,13 +1,14 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Orbitron', sans-serif;
 }   
 
 
 
 body{
-    background-image: url("../images/background.png");
+    background-image: url("../images/backgrounds/background_index.jpg");
+    background-size: 110%;
 }
 
 /* Index Page CSS with grid layout for the main containers
@@ -75,6 +76,10 @@ body{
         max-width: 100%;
         margin-top: 20px;
     }
+
+    .img_index{
+        display: none;
+    }
 }
 
 
@@ -87,18 +92,10 @@ body{
 
 .text_index p {
     color: #f0f0ff; 
-    margin-top: 20px;
+    margin-top: 10%;
     width: 100%;
     font-size: 25px;
 
-}
-
-.text_index h1 p{
-    color: #e0e0ff;
-    font-size: 20px;
-    text-align: justify;
-    line-height: 1.5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @media (max-width: 700px) {
