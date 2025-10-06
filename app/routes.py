@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from .forms import MessageForm
 main = Blueprint("main", __name__)
 
 aliens = [
@@ -34,7 +35,30 @@ def index():
 def information():
     return render_template('information.html', title='User information')
 
-@main.route('/species')
+@main.route('/species', methods =['GET', 'POST'])
 def species():
-    return render_template('species.html', title='magic storage')
+    
+    name = None
+    form = MessageForm()
+    class_imput = None
+    origin = None
+    danger = None
+    description = None
+    
+    new_alien={}
+    
+    if form.validate_on_submit():
+        new_alien = {
+            "name": form.name.data,
+            "danger": form.danger.data,
+            "class": form.class_input.data,
+            "origin": form.origin.data,
+            "description": form.description.data
+        }
+        
+        aliens.append(new_alien)
+        
+        
+    return render_template('species.html', title='magic storage', class_imput = class_imput,
+        name = name, form = form,origin = origin, danger = danger, description = description)
 
