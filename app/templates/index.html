@@ -29,62 +29,77 @@
 </section>
 
 <div class="own_costum_cards">
-    <div class="container mt-4">
-        <div class="row">
-            {% for alien in aliens[:3] %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ alien.name }}</h5>
-                        <h6 class="card-subtitle mb-2">
-                            Class: {{ alien.class }}
-                        </h6>
-                        <p class="card-text">
-                            Origin: {{ alien.origin }}
-                        </p>
-                        <p class="card-text">{{ alien.description }}</p>
+    <div class="own_costum_cards">
+        <div class="container mt-4">
+            <div class="row">
+                {% for alien in aliens %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ alien.Name }}</h5>
+                            <h6 class="card-subtitle mb-2">
+                                Class: {{ alien.Class }}
+                            </h6>
+                            {%if alien.origin %}
+                            <p class="card-text">
+                                Origin: {{ alien.Origin }}
+                            </p>
+                            {% else %}
+                            <p class="card-text">
+                                Origin: Unknown
+
+                            </p>
+                            <p class="card-text">
+                                Danger: {{ alien.Danger }}
+                            </p>
+                            {% endif %}
+                            <p class="card-text">{{ alien.Description }}</p>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
+
     </div>
 </div>
 
 
-<div class="container my-4" >
-    <div class="row align-items-center">
-        <div class="col-md-6 text_bottom">
-            <h2>The Research Division</h2>
-            <p>
-                Our central research outpost is stationed on Polyphemus,
-                within the Messier 82 Galaxy. The facility monitors local ecosystems,
-                catalogues newly discovered species, and analyzes the bioluminescent lifeforms that inhabit its oceans
-                and crystalline deserts.
-                <br> <br>
-                Our scientists, explorers, and archivists work tirelessly to decode the biology, behavior,
-                and histories of intelligent species across the known galaxies. Every discovery is meticulously
-                documented,
-                ensuring that knowledge once scattered among the stars becomes accessible to all who seek to understand
-                the vast diversity of life.
-            </p>
-        </div>
+    <div class="container my-4">
+        <div class="row align-items-center">
+            <div class="col-md-6 text_bottom">
+                <h2>The Research Division</h2>
+                <p>
+                    Our central research outpost is stationed on Polyphemus,
+                    within the Messier 82 Galaxy. The facility monitors local ecosystems,
+                    catalogues newly discovered species, and analyzes the bioluminescent lifeforms that inhabit its
+                    oceans
+                    and crystalline deserts.
+                    <br> <br>
+                    Our scientists, explorers, and archivists work tirelessly to decode the biology, behavior,
+                    and histories of intelligent species across the known galaxies. Every discovery is meticulously
+                    documented,
+                    ensuring that knowledge once scattered among the stars becomes accessible to all who seek to
+                    understand
+                    the vast diversity of life.
+                </p>
+            </div>
 
-        <div class="col-md-6 text-center">
-            <img src="../static/images/planet_origin.jpg" alt="Base" class="img-fluid rounded">
+            <div class="col-md-6 text-center">
+                <img src="../static/images/planet_origin.jpg" alt="Base" class="img-fluid rounded">
+            </div>
         </div>
     </div>
-</div>
 
 
 
 
-{% endblock %}
+    {% endblock %}
 
-{% block styles %}
-<link rel="stylesheet" href="../static/css/index.css">
-{% endblock %}
+    {% block styles %}
+    <link rel="stylesheet" href="../static/css/index.css">
+    {% endblock %}
 
-{% block head %}
-<title>Home - The company database</title>
-{% endblock %}
+    {% block head %}
+    <title>Home - The company database</title>
+    {% endblock %}

@@ -1,17 +1,19 @@
 .container_form {
     position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
 }
 
-background{
-    
-    background-color: grey;
+.inside{
     align-self: center;
     width: 60%;
+     margin-top: 65px;
     height: 100%;
 }
+
+.container_form p{
+    font-family: 'Courier New', Courier, monospace;
