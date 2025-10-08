@@ -1,34 +1,39 @@
 {% extends "base.html" %}
 {% block app_pagecontent %}
 
-{% block content %}
+<div class="title">
+<h2>aa</h2>
+<h6>aa</h6>
+
+</div>
+
   <h1>Formtest</h1>
   <form action="" method="post">
     {{ form.hidden_tag() }}
 
     <p>
       {{ form.name.label }}<br>
-      {{ form.name(size=32) }}
+      {{ form.name() }}
     </p>
 
     <p>
       {{ form.class_imput.label }}<br>
-      {{ form.class_imput(size=32) }}
+      {{ form.class_imput() }}
     </p>
 
     <p>
       {{ form.origin.label }}<br>
-      {{ form.origin(size=32) }}
+      {{ form.origin() }}
     </p>
 
     <p>
       {{ form.danger.label }}<br>
-      {{ form.danger(size=32) }}
+      {{ form.danger() }}
     </p>
 
     <p>
       {{ form.description.label }}<br>
-      {{ form.description(rows=4, cols=40) }}
+      {{ form.description() }}
     </p>
 
     <p>{{ form.submit() }}</p>
@@ -38,5 +43,6 @@
 
 
 
-
+{% block styles %}
+<link rel="stylesheet" href="../static/css/species.css">
 {% endblock %}

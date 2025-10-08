@@ -15,8 +15,10 @@
             capabilities make it easy to find the information you need.
             Join us in unraveling the mysteries of life beyond Earth!
             <br>
-            For more information, visit the "About" page or explore the "Species" section to start your journey into the unknown.
-            <br> We are aware of the dangerousness of some species. If you encounter any of them, please contact the the company immediately.
+            For more information, visit the "About" page or explore the "Species" section to start your journey into the
+            unknown.
+            <br> We are aware of the dangerousness of some species. If you encounter any of them, please contact the the
+            company immediately.
         </p>
     </section>
 </section>
@@ -24,20 +26,59 @@
 <section class="most_famous">
     <h2 class="most_fam_title">Most Famous Species!</h2>
     <h6 class="most_fam_subtitle">These are some of the most famous specimens:</h6>
-     
-    <!-- We use a "for" for each card-->
-    {% for alien in aliens[:3] %}
-    <div class="card{{ loop.index0 }}">
-        <p>Name: {{ alien.get('name') }}</p>
-        <p>Class: {{ alien.get('class') }}</p>
-        <p>Origin: {{ alien.get('origin') }}</p>
-        <p>Danger: {{ alien.get('danger') }}</p>
-        <p>Description: {{ alien.get('description') }}</p>
-    </div>
-    {% endfor %}
-
-        
 </section>
+
+<div class="own_costum_cards">
+    <div class="container mt-4">
+        <div class="row">
+            {% for alien in aliens[:3] %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ alien.name }}</h5>
+                        <h6 class="card-subtitle mb-2">
+                            Class: {{ alien.class }}
+                        </h6>
+                        <p class="card-text">
+                            Origin: {{ alien.origin }}
+                        </p>
+                        <p class="card-text">{{ alien.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-4" >
+    <div class="row align-items-center">
+        <div class="col-md-6 text_bottom">
+            <h2>The Research Division</h2>
+            <p>
+                Our central research outpost is stationed on Polyphemus,
+                within the Messier 82 Galaxy. The facility monitors local ecosystems,
+                catalogues newly discovered species, and analyzes the bioluminescent lifeforms that inhabit its oceans
+                and crystalline deserts.
+                <br> <br>
+                Our scientists, explorers, and archivists work tirelessly to decode the biology, behavior,
+                and histories of intelligent species across the known galaxies. Every discovery is meticulously
+                documented,
+                ensuring that knowledge once scattered among the stars becomes accessible to all who seek to understand
+                the vast diversity of life.
+            </p>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="../static/images/planet_origin.jpg" alt="Base" class="img-fluid rounded">
+        </div>
+    </div>
+</div>
+
+
+
+
 {% endblock %}
 
 {% block styles %}
