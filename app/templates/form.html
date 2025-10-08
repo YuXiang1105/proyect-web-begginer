@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block app_pagecontent %}
+
+<div class="container_form">
+    <div class="inside">
+
+        <h1>Add a new creature!</h1>
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.name.label }}<br>
+                {{ form.name() }}
+            </p>
+            <p>
+                {{ form.class_imput.label }}<br>
+                {{ form.class_imput() }}
+            </p>
+            <p>
+                {{ form.origin.label }}<br>
+                {{ form.origin() }}
+            </p>
+            <p>
+                {{ form.danger.label }}<br>
+                {{ form.danger() }}
+            </p>
+            <p>
+                {{ form.description.label }}<br>
+                {{ form.description() }}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="../static/css/form.css">
+{% endblock %}

@@ -2,42 +2,33 @@
 {% block app_pagecontent %}
 
 <div class="title">
-<h2>aa</h2>
-<h6>aa</h6>
-
+ <h2>Featured Species</h2>
+  <h6>A selection of some specimens across the galaxies</h6>
 </div>
 
-  <h1>Formtest</h1>
-  <form action="" method="post">
-    {{ form.hidden_tag() }}
+<div class="own_costum_cards">
+    <div class="container mt-4">
+        <div class="row">
+            {% for alien in aliens[:3] %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ alien.name }}</h5>
+                        <h6 class="card-subtitle mb-2">
+                            Class: {{ alien.class }}
+                        </h6>
+                        <p class="card-text">
+                            Origin: {{ alien.origin }}
+                        </p>
+                        <p class="card-text">{{ alien.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-    <p>
-      {{ form.name.label }}<br>
-      {{ form.name() }}
-    </p>
-
-    <p>
-      {{ form.class_imput.label }}<br>
-      {{ form.class_imput() }}
-    </p>
-
-    <p>
-      {{ form.origin.label }}<br>
-      {{ form.origin() }}
-    </p>
-
-    <p>
-      {{ form.danger.label }}<br>
-      {{ form.danger() }}
-    </p>
-
-    <p>
-      {{ form.description.label }}<br>
-      {{ form.description() }}
-    </p>
-
-    <p>{{ form.submit() }}</p>
-  </form>
 {% endblock %}
 
 

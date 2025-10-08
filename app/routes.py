@@ -29,17 +29,20 @@ aliens = [
 @main.route('/')
 @main.route('/index')
 def index():
-    return render_template('index.html', title='Home', aliens = aliens)
+    return render_template('index.html', aliens = aliens)
 
 @main.route('/information')
 def information():
-    return render_template('information.html', title='User information')
+    return render_template('information.html')
 
-@main.route('/species', methods =['GET', 'POST'])
+@main.route('/species')
 def species():
-    
-    name = None
+    return render_template('species.html', aliens = aliens)
+
+@main.route('/form' ,methods =['GET', 'POST'])
+def form():
     form = MessageForm()
+    name = None
     class_imput = None
     origin = None
     danger = None
@@ -48,10 +51,11 @@ def species():
     new_alien={}
     
     if form.validate_on_submit():
+        
         new_alien = {
             "name": form.name.data,
             "danger": form.danger.data,
-            "class": form.class_input.data,
+            "class": form.class_imput.data,
             "origin": form.origin.data,
             "description": form.description.data
         }
@@ -59,6 +63,5 @@ def species():
         aliens.append(new_alien)
         
         
-    return render_template('species.html', title='magic storage', class_imput = class_imput,
-        name = name, form = form,origin = origin, danger = danger, description = description)
-
+    return render_template('form.html', class_imput = class_imput,name = name,
+        form = form,origin = origin, danger = danger, description = description, aliens = aliens)

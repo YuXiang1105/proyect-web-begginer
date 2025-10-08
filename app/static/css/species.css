@@ -3,3 +3,12 @@
     text-align: center;
     color:#f0f0ff;
 }
+.own_costum_cards .card {
+    background-color: rgba(0, 0, 30, 0.85);
+    color: #e0e0ff;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00ffff;
+    padding: 15px;
+    height: 100%;
+}
