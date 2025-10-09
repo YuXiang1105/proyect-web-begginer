@@ -32,7 +32,7 @@
     <div class="own_costum_cards">
         <div class="container mt-4">
             <div class="row">
-                {% for alien in aliens %}
+                {% for alien in aliens[:3] %}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body">
@@ -40,7 +40,7 @@
                             <h6 class="card-subtitle mb-2">
                                 Class: {{ alien.Class }}
                             </h6>
-                            {%if alien.origin %}
+                            {%if alien.Origin %}
                             <p class="card-text">
                                 Origin: {{ alien.Origin }}
                             </p>
@@ -49,10 +49,11 @@
                                 Origin: Unknown
 
                             </p>
+                            {% endif %}
                             <p class="card-text">
                                 Danger: {{ alien.Danger }}
                             </p>
-                            {% endif %}
+                            
                             <p class="card-text">{{ alien.Description }}</p>
                         </div>
                     </div>

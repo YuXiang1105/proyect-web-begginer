@@ -5,7 +5,7 @@
     <div class="inside">
 
         <h1>Add a new creature!</h1>
-        <form action="" method="POST">
+        <form method="POST">
             {{ form.hidden_tag() }}
             <p>
                 {{ form.name.label }}<br>
@@ -38,4 +38,8 @@
 
 {% block styles %}
 <link rel="stylesheet" href="../static/css/form.css">
+{% endblock %}
+
+{%block head %}
+<title>New specie</title>
 {% endblock %}

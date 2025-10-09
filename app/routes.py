@@ -72,5 +72,4 @@ def form():
         return redirect(url_for('main.species'))
         
         
-    return render_template('form.html', class_imput = class_imput,name = name,
-        form = form,origin = origin, danger = danger, description = description, aliens = aliens)
+    return render_template('form.html', aliens = aliens, form =form)
