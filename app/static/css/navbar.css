@@ -77,40 +77,12 @@ body{
     white-space: nowrap;
     
 }
-/*for the buttons of the navbar, a table was used, it will contain the main pages of the website, for the rest,
-     a sidebar will be added with the other pages (including the pages of the ul) */
-.navLinks{
-    height: 20px;
-    background-color: #a9a4a4;
-    grid-area: navLinks;
 
-}
 
-@media (max-width: 700px) {
-  .navLinks {
-    display: none;
-  }
-}
-
-.navLinks table, th, td {
-    text-align: center;
-
-}
 
 .container_navbar a{
     text-decoration: none;
     color: white;
-}
-
-/*We put a padding for a:hover */ 
-
-.navLinks a {
-    display: block;
-    padding: 18px 0;
-}
-
-.navLinks a:hover {
-    background: #1e0c81;
 }
 
 /*interactive sidebar, toggled by "navbar.js" */
@@ -147,11 +119,15 @@ body{
     text-align: left;
     display: block;
     width: 100%;
-    height: 20px;
-    padding: 18px 0;
+
+    padding: 16px 0;
     margin-bottom: 0px;
     text-decoration: none;
     color: black;
+}
+
+.sidebar li:hover{
+    background-color: bisque;
 }
 
 .sidebar img {
@@ -170,4 +146,45 @@ body{
 
 .sidebar--visible {
     transform: translateX(0);
+}
+
+
+.user_part {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.login_button {
+    margin-right: 20px;
+    border-radius: 10%;
+    padding: 6px 10px;
+    border: 1px solid #00ffc8;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.login_button:hover{
+ background-color: #00ffc8;
+}
+
+.user {
+    margin-right: 20px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid #00ffc8;
+    border-radius: 4px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: 600;
 }

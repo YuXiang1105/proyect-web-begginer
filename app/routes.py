@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for
-from .forms import MessageForm
+from .forms import newClass, log_in_form
 main = Blueprint("main", __name__)
+
+User = {"name":None}
 
 aliens = [
     {
@@ -37,24 +39,32 @@ aliens = [
 @main.route('/')
 @main.route('/index')
 def index():
-    return render_template('index.html', aliens = aliens)
+    return render_template('index.html', aliens = aliens, User = User)
+
+@main.route('/log_in',methods =['GET', 'POST'])
+
+def log_in():        
+    form = log_in_form()
+    
+    if form.validate_on_submit() and User["name"] == None:
+         User["name"] = form.user.data
+         return redirect(url_for('main.index'))
+    elif form.validate_on_submit() and User["name"] != None:
+         return redirect(url_for('main.index'))
+      
+    return render_template('log_in.html', User = User, form=form)
 
 @main.route('/information')
 def information():
-    return render_template('information.html')
+    return render_template('information.html', User = User)
 
 @main.route('/species')
 def species():
-    return render_template('species.html', aliens = aliens)
+    return render_template('species.html', aliens = aliens, User = User)
 
 @main.route('/form' ,methods =['GET', 'POST'])
 def form():
-    form = MessageForm()
-    name = None
-    class_imput = None
-    origin = None
-    danger = None
-    description = None
+    form = newClass()
     
     new_alien={}
     
@@ -72,4 +82,4 @@ def form():
         return redirect(url_for('main.species'))
         
         
-    return render_template('form.html', aliens = aliens, form =form)
+    return render_template('form.html', aliens = aliens, form =form, User = User)

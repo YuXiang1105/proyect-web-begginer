@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block app_pagecontent %}
+
+<div class="container_form">
+    <div class="inside">
+        <h1>Welcome back!</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.user.label }}<br>
+                {{ form.user(style="width:100%;") }}
+            </p>
+                        <p>
+                {{ form.email.label }}<br>
+                {{ form.email(style="width:100%;") }}
+            </p>
+                        <p>
+                {{ form.password.label }}<br>
+                {{ form.password(style="width:100%;") }}
+            </p>
+            
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="../static/css/form.css">
+{% endblock %}
+
+{%block head %}
+<title>Log in</title>
+{% endblock %}

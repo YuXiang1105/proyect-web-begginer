@@ -3,7 +3,11 @@
 
 <div class="title">
  <h2>Featured Species</h2>
-  <h6>A selection of some specimens across the galaxies</h6>
+  <h6>A selection of some specimens across the galaxies
+    {%if User["name"] != None %}
+    <br> Welcome back {{User["name"]}}!
+    {%endif%}
+  </h6>
 </div>
 
 <div class="own_costum_cards">

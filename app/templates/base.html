@@ -22,21 +22,28 @@
 <body>
 
     <nav class="container_navbar">
+
         <div class="menu_container" id="menu_container">
         <p>&#9776;</p>
         </div> 
+
 
         <div class="photo">
         <img src="../static/images/navbar_logo.png">
         </div>
         <h1 class="mainText"><a href="{{url_for('main.index')}}">THE HYPERIUM HUB</a></h1>
-        <table class="navLinks">
-            <tr>
-                <th> <a href="{{url_for('main.index')}}">Home</a></th>
-                <th> <a href="{{url_for('main.information')}}">About</a></th>
-                <th> <a href="{{url_for('main.species')}}">Species</a></th>
-            </tr>
-        </table>
+
+<div class="user_part">
+    {% if User["name"] == None %}
+        <a href="{{ url_for('main.log_in') }}" class="login_button">LOG IN</a>
+    {% else %}
+        <div class="user">
+            <img src="../static/images/incons/user.png" alt="user icon" class="user-icon">
+            <span class="name">{{ User["name"] }}</span>
+        </div>
+    {% endif %}
+</div>
+
 
     </nav>
 
@@ -70,6 +77,7 @@
 <footer class="bg-secondary text-white py-3 mt-5">
   <div class="container d-flex justify-content-between align-items-center" >
     <span>Database last updated: year 138900 since Big Bang</span>
+    <button id="go_top">  GO TO TOP </button>
     <span>For the sake of humanity</span>
   </div>
 </footer>
@@ -77,7 +85,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="../static/js/navbar.js"></script>
+    <script src="../static/js/base.js"></script>
 </body>
 
 </html>
