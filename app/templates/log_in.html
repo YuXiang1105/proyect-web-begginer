@@ -24,7 +24,11 @@
     </div>
 </div>
 
-
+{%if form.email.errors %}
+{%for error in errors%}
+<p> {{error}} </p>
+{%endfor%}
+{%endif%}
 {% endblock %}
 
 
