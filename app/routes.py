@@ -32,6 +32,13 @@ aliens = [
         "Class": "Parasyte",
         "Origin": None,
         "Description": "A specimen from the kindom of Hallownest, part of a planet of intelligent insects. Survives by invading the mind of other living being, and inducing them to a dream. If the subject is in the dream, Radiance has full control of the body, being able to destroy entire kindoms"
+    },
+    {
+        "Name": "Darkin",
+        "Danger": "High",
+        "Class": "Destructor",
+        "Origin": "Runaterra",
+        "Description": "From the planet Runaterra, they are considered fallen ascended in their worlds. Their minds have become corrupted by the endless wars in their lands. Known for their destructive nature, all darkins have been imprisioned in weapons"
     }
     
 ]
@@ -43,7 +50,7 @@ def index():
 
 @main.route('/log_in',methods =['GET', 'POST'])
 
-def log_in():        
+def log_in():
     form = log_in_form()
     
     if form.validate_on_submit() and User["name"] == None:

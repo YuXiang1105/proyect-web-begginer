@@ -4,9 +4,7 @@ python3 -m venv .venv
 source .venv/bin/activate (mac and linux)
 source .venv/Scripts/activate (Windows)
 2-Install the next packages in the virt.environment:
-pip install Flask
-pip install wtforms
-pip install
+pip install -r requirements.txt
 3-For use,write the next command in the powershell:
 python run.py
 
