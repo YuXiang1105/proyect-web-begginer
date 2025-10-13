@@ -5,13 +5,13 @@ main = Blueprint("main", __name__)
 User = {"name":None}
 
 aliens = [
-    {
+    {"Name": "Xenomorph",
          "Danger": "extreme",
         "Class": "parasyte",
         "Origin": "open space, not confirmed",
         "Description": "The Xenomorph is a highly aggressive extraterrestrial species with a unique life cycle and a deadly hunting instinct. It is known for its biomechanical appearance, acid blood, and ability to adapt to various environments. The Xenomorph is a formidable predator that poses a significant threat to any life form it encounters.",
     },
-    { "Name": "Xenomorph",
+    { 
       
         "Name": "Naytibas",
         "Danger": "Extreme",
