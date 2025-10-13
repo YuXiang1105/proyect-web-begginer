@@ -6,13 +6,13 @@ User = {"name":None}
 
 aliens = [
     {
-        "Name": "Xenomorph",
-        "Danger": "extreme",
+         "Danger": "extreme",
         "Class": "parasyte",
         "Origin": "open space, not confirmed",
         "Description": "The Xenomorph is a highly aggressive extraterrestrial species with a unique life cycle and a deadly hunting instinct. It is known for its biomechanical appearance, acid blood, and ability to adapt to various environments. The Xenomorph is a formidable predator that poses a significant threat to any life form it encounters.",
     },
-    {
+    { "Name": "Xenomorph",
+      
         "Name": "Naytibas",
         "Danger": "Extreme",
         "Class": "Bio-mechanical",
@@ -39,8 +39,14 @@ aliens = [
         "Class": "Destructor",
         "Origin": "Runaterra",
         "Description": "From the planet Runaterra, they are considered fallen ascended in their worlds. Their minds have become corrupted by the endless wars in their lands. Known for their destructive nature, all darkins have been imprisioned in weapons"
+    },
+    {
+        "Name": "Na'vi",
+        "Danger": "Low",
+        "Class": "humanoid",
+        "Origin": "Pandora",
+        "Description": "The Na'vi, from Pandora, are considered one of the few intelligent species in their planet. They posses a 'braid' that connects to other creatures and plants of their planet. They have bioluminescent markings on their skin and emi-prehensile tails. Their appearence posses some feline-like physical traits,including large eyes and swiveling ears.    "
     }
-    
 ]
 
 @main.route('/')

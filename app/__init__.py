@@ -2,7 +2,7 @@ from flask import Flask
 from .routes import main
 def create_app(config = None):
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'you-will-never-guess'
+    app.config['SECRET_KEY'] = 'the super secret ket'
     app.config.from_object(config)
     app.register_blueprint(main)
     return app
