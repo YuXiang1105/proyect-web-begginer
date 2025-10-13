@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for
 from .forms import newClass, log_in_form
 main = Blueprint("main", __name__)
-
+#Data of the username, in the future, we will sumbit it to the database
 User = {"name":None}
 
+#I used an array to store every alien
 aliens = [
     {"Name": "Xenomorph",
          "Danger": "extreme",
@@ -59,6 +60,7 @@ def index():
 def log_in():
     form = log_in_form()
     
+    #if the user tries to sumbit another username, it does nothing to the original user.
     if form.validate_on_submit() and User["name"] == None:
          User["name"] = form.user.data
          return redirect(url_for('main.index'))
@@ -82,7 +84,7 @@ def form():
     new_alien={}
     
     if form.validate_on_submit():
-        
+        #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
         new_alien = {
             "Name": form.name.data,
             "Danger": form.danger.data,

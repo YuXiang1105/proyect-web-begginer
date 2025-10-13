@@ -16,6 +16,8 @@
     <!-- Default title if none is provided -->
     <title>Xenovault</title>
     {% endblock %}
+
+    <!--We have 3 blocks, one for the CSS, another for the name of the page, and the actual blockcontent-->
 </head>
 
 
@@ -35,6 +37,9 @@
         <h1 class="mainText"><a href="{{url_for('main.index')}}">THE HYPERIUM HUB</a></h1>
 
 <div class="user_part">
+
+    <!--If the username is none, in the navbar, 
+    it will display a button with log in.However, if we have a username, it displays the name with a small logo -->
     {% if User["name"] == None %}
         <a href="{{ url_for('main.log_in') }}" class="login_button">LOG IN</a>
     {% else %}
