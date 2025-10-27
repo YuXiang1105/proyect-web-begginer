@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for
 from .forms import newClass, log_in_form
+from .models import Alien
+from . import db
+
 main = Blueprint("main", __name__)
 #Data of the username, in the future, we will sumbit it to the database
 User = {"name":None}
 
 #I used an array to store every alien
+"""
 aliens = [
     {"Name": "Xenomorph",
          "Danger": "extreme",
@@ -49,10 +53,11 @@ aliens = [
         "Description": "The Na'vi, from Pandora, are considered one of the few intelligent species in their planet. They posses a 'braid' that connects to other creatures and plants of their planet. They have bioluminescent markings on their skin and emi-prehensile tails. Their appearence posses some feline-like physical traits,including large eyes and swiveling ears.    "
     }
 ]
-
+"""
 @main.route('/')
 @main.route('/index')
 def index():
+    aliens = Alien.query.all()
     return render_template('index.html', aliens = aliens, User = User)
 
 @main.route('/log_in',methods =['GET', 'POST'])
@@ -75,25 +80,31 @@ def information():
 
 @main.route('/species')
 def species():
+    aliens = Alien.query.all()
     return render_template('species.html', aliens = aliens, User = User)
 
 @main.route('/form' ,methods =['GET', 'POST'])
 def form():
     form = newClass()
     
-    new_alien={}
+    
+    aliens = Alien.query.all()
+    
+    new_alien= None
+    
+    
     
     if form.validate_on_submit():
         #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
-        new_alien = {
-            "Name": form.name.data,
-            "Danger": form.danger.data,
-            "Class": form.class_imput.data,
-            "Origin": form.origin.data,
-            "Description": form.description.data
-        }
         
-        aliens.append(new_alien)
+        Name= form.name.data,
+        Danger= form.danger.data,
+        Class= form.class_imput.data,
+        Origin= form.origin.data,
+        Description= form.description.data
+        new_alien = Alien(Name=Name, Danger = Danger, Origin = Origin, Class = Class ,Description=Description)
+        db.session.add(new_alien)
+        db.session.commit()
         return redirect(url_for('main.species'))
         
         
