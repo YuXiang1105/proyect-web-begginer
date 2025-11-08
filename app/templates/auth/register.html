@@ -3,7 +3,7 @@
 
 <div class="container_form">
     <div class="inside">
-        <h1>Welcome back!</h1>
+        <h1>Register here</h1>
         <!--We sumbit and change the object User-->
         <form method="POST">
             {{ form.hidden_tag() }}
@@ -19,10 +19,13 @@
                 {{ form.password.label }}<br>
                 {{ form.password(style="width:100%;") }}
             </p>
+            <p>
+                {{ form.password2.label }}<br>
+                {{ form.password2(style="width:100%;") }}
+            </p>
             
             <p>{{ form.submit() }}</p>
         </form>
-        <p>you don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
     </div>
 </div>
 

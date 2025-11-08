@@ -3,7 +3,6 @@ from config import DevConfig
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-
 login_manager = LoginManager()
 db = SQLAlchemy()
 #if the user tries to go to a page that requires login, it redirects to the login page
@@ -15,13 +14,14 @@ def create_app(config = DevConfig):
     app = Flask(__name__)
     #we put the desired config to the ap
     app.config.from_object(config)
-
+    login_manager.init_app(app)
     #we connect the database to the app
     db.init_app(app)
     #we import the blueprints into the app
     from .routes import main
-    from .routes import register_blueprint 
+    from .routes import auth 
     app.register_blueprint(main)  
-    app.register_blueprint(register_blueprint)
-    
+    app.register_blueprint(auth)
+    with app.app_context():
+        db.create_all()
     return app

@@ -1,13 +1,14 @@
-from flask import Blueprint, render_template, redirect, url_for
-from .forms import newClass, log_in_form
+from flask_login import login_user, logout_user, login_required, current_user
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from .forms import newClass, log_in_form, register_form
 from .models import Alien
 from . import db
+from .models import User
 
 main = Blueprint("main", __name__)
-register_blueprint = Blueprint("auth", __name__)
+auth = Blueprint("auth", __name__)
 
 #Data of the username, in the future, we will sumbit it to the database
-User = {"name":None}
 
 #I used an array to store every alien
 """
@@ -24,7 +25,7 @@ aliens = [
         "Danger": "Extreme",
         "Class": "Bio-mechanical",
         "Origin": "Earth (post-human epoch)",
-        "Description": "he Naytibas are biomechanical alien organisms that invaded Earth, annihilating most of humanity. Their bodies fuse flesh and machinery, capable of regenerating and adapting to combat. They are driven by a hive-like will and worship an ancient entity known as the Elder Naytiba."
+        "Description": "The Naytibas are biomechanical alien organisms that invaded Earth, annihilating most of humanity. Their bodies fuse flesh and machinery, capable of regenerating and adapting to combat. They are driven by a hive-like will and worship an ancient entity known as the Elder Naytiba."
     },
     {
         "Name": "Lord of Cinder",
@@ -60,33 +61,37 @@ aliens = [
 @main.route('/index')
 def index():
     aliens = Alien.query.all()
-    return render_template('main/index.html', aliens = aliens, User = User)
+    return render_template('main/index.html', aliens = aliens)
 
 
 @main.route('/information')
 def information():
-    return render_template('main/information.html', User = User)
+    return render_template('main/information.html')
 
 @main.route('/species')
 def species():
     aliens = Alien.query.all()
-    return render_template('main/species.html', aliens = aliens, User = User)
+    return render_template('main/species.html', aliens = aliens )
 
 #auth blueprints routes
-@register_blueprint.route('/log_in',methods =['GET', 'POST'])
+@auth.route('/log_in',methods =['GET', 'POST'])
 def log_in():
     form = log_in_form()
+    if form.validate_on_submit():
+        email = form.email.data.lower().strip()
+        user = User.query.filter_by(email=email).first()
+        
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            next_url = request.args.get("next")
+            return redirect(next_url or url_for("main.index"))
+        else:
+            flash("Invalid email or password", "danger")
     
-    #if the user tries to sumbit another username, it does nothing to the original user.
-    if form.validate_on_submit() and User["name"] == None:
-         User["name"] = form.user.data
-         return redirect(url_for('main/main.index'))
-    elif form.validate_on_submit() and User["name"] != None:
-         return redirect(url_for('main/main.index'))
-      
-    return render_template('auth/log_in.html', User = User, form=form)
+    return render_template("auth/log_in.html", form=form)
 
-@register_blueprint.route('/form' ,methods =['GET', 'POST'])
+@auth.route('/form' ,methods =['GET', 'POST'])
+@login_required #We need to be logged in to add an alien
 def form():
     form = newClass()
     aliens = Alien.query.all()
@@ -104,4 +109,31 @@ def form():
         db.session.commit()
         return redirect(url_for('main/main.species'))
         
-    return render_template('auth/form.html', aliens = aliens, form =form, User = User)
+    return render_template('auth/form.html', aliens = aliens, form =form)
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = register_form()
+    if form.validate_on_submit():
+        user = form.user.data
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            flash('User already exists', 'danger')
+        else: 
+            NewUser = User(email= form.email.data, user=user)
+            NewUser.set_password(form.password.data)
+            db.session.add(NewUser)
+            db.session.commit()
+            login_user(NewUser)
+            flash('Registration successful', 'success')
+        
+        return redirect(url_for("main.index"))    
+    
+    return render_template('auth/register.html', form = form)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out successfully', 'info')
+    return redirect(url_for('main.index'))

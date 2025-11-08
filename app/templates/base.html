@@ -40,12 +40,12 @@
 
     <!--If the username is none, in the navbar, 
     it will display a button with log in.However, if we have a username, it displays the name with a small logo -->
-    {% if User["name"] == None %}
+    {% if current_user.is_authenticated == False %}
         <a href="{{ url_for('auth.log_in') }}" class="login_button">LOG IN</a>
     {% else %}
         <div class="user">
             <img src="../static/images/incons/user.png" alt="user icon" class="user-icon">
-            <span class="name">{{ User["name"] }}</span>
+            <span class="name">{{current_user.user}}</span>
         </div>
     {% endif %}
 </div>
