@@ -4,6 +4,8 @@ from .models import Alien
 from . import db
 
 main = Blueprint("main", __name__)
+register_blueprint = Blueprint("auth", __name__)
+
 #Data of the username, in the future, we will sumbit it to the database
 User = {"name":None}
 
@@ -58,42 +60,37 @@ aliens = [
 @main.route('/index')
 def index():
     aliens = Alien.query.all()
-    return render_template('index.html', aliens = aliens, User = User)
+    return render_template('main/index.html', aliens = aliens, User = User)
 
-@main.route('/log_in',methods =['GET', 'POST'])
 
+@main.route('/information')
+def information():
+    return render_template('main/information.html', User = User)
+
+@main.route('/species')
+def species():
+    aliens = Alien.query.all()
+    return render_template('main/species.html', aliens = aliens, User = User)
+
+#auth blueprints routes
+@register_blueprint.route('/log_in',methods =['GET', 'POST'])
 def log_in():
     form = log_in_form()
     
     #if the user tries to sumbit another username, it does nothing to the original user.
     if form.validate_on_submit() and User["name"] == None:
          User["name"] = form.user.data
-         return redirect(url_for('main.index'))
+         return redirect(url_for('main/main.index'))
     elif form.validate_on_submit() and User["name"] != None:
-         return redirect(url_for('main.index'))
+         return redirect(url_for('main/main.index'))
       
-    return render_template('log_in.html', User = User, form=form)
+    return render_template('auth/log_in.html', User = User, form=form)
 
-@main.route('/information')
-def information():
-    return render_template('information.html', User = User)
-
-@main.route('/species')
-def species():
-    aliens = Alien.query.all()
-    return render_template('species.html', aliens = aliens, User = User)
-
-@main.route('/form' ,methods =['GET', 'POST'])
+@register_blueprint.route('/form' ,methods =['GET', 'POST'])
 def form():
     form = newClass()
-    
-    
     aliens = Alien.query.all()
-    
     new_alien= None
-    
-    
-    
     if form.validate_on_submit():
         #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
         
@@ -105,7 +102,6 @@ def form():
         new_alien = Alien(Name=Name, Danger = Danger, Origin = Origin, Class = Class ,Description=Description)
         db.session.add(new_alien)
         db.session.commit()
-        return redirect(url_for('main.species'))
+        return redirect(url_for('main/main.species'))
         
-        
-    return render_template('form.html', aliens = aliens, form =form, User = User)
+    return render_template('auth/form.html', aliens = aliens, form =form, User = User)

@@ -1,4 +1,4 @@
-from . import db
+from . import db, login_manager
 from sqlalchemy import *
 
 class Alien(db.Model):
