@@ -19,7 +19,10 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ alien.Name }}</h5>
                         <h6 class="card-subtitle mb-2">
-                            Class: {{ alien.Class }}
+                           Classes:<br>
+                            {% for classes in alien.classes%}
+                            {{ classes.name }} <br>
+                           {% endfor %} 
                         </h6>
                         {%if alien.Origin %}
                        <p class="card-text">
@@ -35,7 +38,9 @@
                             Danger: {{ alien.Danger }}
                         </p>
                        
-                        <p class="card-text">{{ alien.Description }}</p>
+                        <p class="card-text">
+                            {{ alien.Description }}
+                        </p>
                     </div>
                 </div>
             </div>

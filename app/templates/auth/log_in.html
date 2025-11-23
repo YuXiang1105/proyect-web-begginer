@@ -1,43 +1,55 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block app_pagecontent %}
-
-<div class="container_form">
+  <div class="container_form">
     <div class="inside">
-        <h1>Welcome back!</h1>
-        <!--We sumbit and change the object User-->
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.user.label }}<br>
-                {{ form.user(style="width:100%;") }}
-            </p>
-             <p>
-                {{ form.email.label }}<br>
-                {{ form.email(style="width:100%;") }}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(style="width:100%;") }}
-            </p>
-            
-            <p>{{ form.submit() }}</p>
-        </form>
-        <p>you don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+      <h1>Welcome back!</h1>
+
+       <!--From: https://flask.palletsprojects.com/en/stable/patterns/flashing/ -->
+      {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <!-- We sumbit and change the object User -->
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.user.label }}<br />
+          {{ form.user(style='width:100%;') }}
+        </p>
+        <p>
+          {{ form.email.label }}<br />
+          {{ form.email(style='width:100%;') }}
+        </p>
+        <p>
+          {{ form.password.label }}<br />
+          {{ form.password(style='width:100%;') }}
+        </p>
+
+        <p>{{ form.submit() }}</p>
+      </form>
+      <p>
+        you don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
+      </p>
     </div>
-</div>
+  </div>
 
-{%if form.email.errors %}
-{%for error in errors%}
-<p> {{error}} </p>
-{%endfor%}
-{%endif%}
+  {% if form.email.errors %}
+    {% for error in errors %}
+      <p>{{ error }}</p>
+    {% endfor %}
+  {% endif %}
 {% endblock %}
-
 
 {% block styles %}
-<link rel="stylesheet" href="../static/css/form.css">
+  <link rel="stylesheet" href="../static/css/form.css" />
 {% endblock %}
 
-{%block head %}
-<title>Log in</title>
+{% block head %}
+  <title>Log in</title>
 {% endblock %}

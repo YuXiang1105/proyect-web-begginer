@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 {% block app_pagecontent %}
+<!-- Display flashed messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 
 <section class="container_index">
     <section class="img_index">
         <img src="../static/images/index_img.jpg" alt="nebula">
     </section>
+    
     <section class="text_index">
         <h2>WELCOME TO THE CORPORATION DATABASE</h2>
         <p>

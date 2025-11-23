@@ -1,47 +1,50 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block app_pagecontent %}
-
-<div class="container_form">
+  <div class="container_form">
     <div class="inside">
+      <h1>Add a new creature!</h1>
+      <!-- When we sumbit this form, it sends with a post method 
+        and adds an alien to the array 'Aliens' -->
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.name.label }}<br />
+          {{ form.name(style='width:100%;') }}
+        </p>
+        <p>
+          {{ form.origin.label }}<br />
+          {{ form.origin(style='width:100%;') }}
+        </p>
+        <p>
+          {{ form.danger.label }}<br />
+          {{ form.danger(style='width:100%;') }}
+        </p>
+        <p>
+          {{ form.description.label }}<br />
+          {{ form.description(style='width:100%; height:150px;') }}
+        </p>
+         <div class="form-group">
+        <label>Classes:</label>
+        <div>
+            {% for classes in form.class_imput %}
+                <div class="form-check">
+                    {{ classes(class="form-check-input") }}
+                    {{ classes.label(class="form-check-label") }}
+                </div>
+            {% endfor %}
+        </div>
+         </div>
 
-        <h1>Add a new creature!</h1>
-        <!--When we sumbit this form, it sends with a post method 
-        and adds an alien to the array 'Aliens'-->
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.name.label }}<br>
-                {{ form.name(style="width:100%;") }}
-            </p>
-            <p>
-                {{ form.class_imput.label }}<br>
-                {{ form.class_imput(style="width:100%;") }}
-            </p>
-            <p>
-                {{ form.origin.label }}<br>
-                {{ form.origin(style="width:100%;") }}
-            </p>
-            <p>
-                {{ form.danger.label }}<br>
-                {{ form.danger(style="width:100%;") }}
-            </p>
-            <p>
-                {{ form.description.label }}<br>
-                {{ form.description(style="width:100%; height:150px;") }}
-            </p>
-            <p>{{ form.submit() }}</p>
-        </form>
+        <p>{{ form.submit() }}</p>
+      </form>
     </div>
-</div>
-
-
+  </div>
 {% endblock %}
-
 
 {% block styles %}
-<link rel="stylesheet" href="../static/css/form.css">
+  <link rel="stylesheet" href="../static/css/form.css" />
 {% endblock %}
 
-{%block head %}
-<title>New entity</title>
+{% block head %}
+  <title>New entity</title>
 {% endblock %}

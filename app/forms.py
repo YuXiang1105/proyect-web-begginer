@@ -1,14 +1,21 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
-#form to add a new alien to the species page
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField,SelectMultipleField,widgets
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from app.models import User
+
+#form for adding a new alien
 class newClass(FlaskForm):
-     name = StringField('name', validators=[DataRequired()])
-     class_imput = StringField('class', validators=[DataRequired()])
-     origin = StringField('origin')
-     danger = StringField('danger', validators=[DataRequired()])
-     description = TextAreaField('description', validators=[DataRequired()])
-     submit = SubmitField('submit')
+    name = StringField('Name', validators=[DataRequired()])
+    danger = StringField('Danger', validators=[DataRequired()])
+    origin = StringField('Origin')
+    description = TextAreaField('Description', validators=[DataRequired()])
+    class_imput = SelectMultipleField(
+        "Classes",
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget()
+    )
+    submit = SubmitField('Submit')
+
      
      #form for the log in
 class log_in_form(FlaskForm):
@@ -23,3 +30,13 @@ class register_form(FlaskForm):
      password = PasswordField("password" ,validators=[DataRequired(), Length(min=6)])
      password2 = PasswordField("confirm password" ,validators=[DataRequired(),EqualTo('password', message= "password not equal"), ], )
      submit = SubmitField('submit')
+     
+     def validate_username(self, username):
+          user = User.query.filter_by(username=username.data).first()
+          if user is not None:
+               raise ValidationError('Please use a different username.')
+ 
+     def validate_email(self, email):
+       user = User.query.filter_by(email=email.data).first()
+       if user is not None:
+          raise ValidationError('Please use a different email address.')

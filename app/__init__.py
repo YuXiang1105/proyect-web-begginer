@@ -6,7 +6,7 @@ from flask_login import LoginManager
 login_manager = LoginManager()
 db = SQLAlchemy()
 #if the user tries to go to a page that requires login, it redirects to the login page
-login_manager.login_view = "auth.login"
+login_manager.login_view = "auth.log_in"
 
 
 def create_app(config = DevConfig):
@@ -19,9 +19,9 @@ def create_app(config = DevConfig):
     db.init_app(app)
     #we import the blueprints into the app
     from .routes import main
-    from .routes import auth 
+    from .auth import auth as authentication 
     app.register_blueprint(main)  
-    app.register_blueprint(auth)
+    app.register_blueprint(authentication)
     with app.app_context():
         db.create_all()
     return app
