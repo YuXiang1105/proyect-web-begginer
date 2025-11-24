@@ -52,7 +52,7 @@
                         <p class="card-text">
                             {{ alien.Description }}
                         </p>
-                        {% if current_user.id == alien.Id %}
+                        {% if current_user.id == alien.user_id %}
                         <button>
                             <a href="{{ url_for('main.edit_alien', alien_id=alien.Id) }}">Edit</a>
 
@@ -63,6 +63,7 @@
                             <a href="{{ url_for('main.delete_alien', alien_id=alien.Id) }}">Delete</a>
                         </button>
                         {% endif %}
+                        
                     </div>
                 </div>
             </div>
@@ -70,6 +71,20 @@
         </div>
     </div>
 </div>
+
+<div class="pagination">
+  {% if aliens.has_prev %}
+    <a href="{{ url_for('main.species', page=aliens.prev_num) }}">Previous</a>
+  {% endif %}
+
+  <span>&nbsp;Page {{ aliens.page }} of {{ aliens.pages }}&nbsp;</span>
+
+  {% if aliens.has_next %}
+    <a href="{{ url_for('main.species', page=aliens.next_num) }}">Next</a>
+  {% endif %}
+</div>
+
+
 
 {% endblock %}
 

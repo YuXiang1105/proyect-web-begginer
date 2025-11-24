@@ -12,3 +12,31 @@
     padding: 15px;
     height: 100%;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.pagination a {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007BFF;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.pagination span {
+  font-weight: bold;
+  color: #48b2c0;
+}

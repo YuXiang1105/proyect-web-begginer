@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from .forms import newClass, log_in_form, register_form, editRelicForm
@@ -22,7 +22,8 @@ def information():
 
 @main.route('/species')
 def species():
-    aliens = Alien.query.all()
+    page = request.args.get('page', 1, type=int)
+    aliens = Alien.query.paginate(page=page, per_page=current_app.config['ALIENS_PER_PAGE'], error_out=False)
     return render_template('main/species.html', aliens = aliens )
 
 @main.route('/species/<alien_id>/edit', methods=['GET','POST'])
