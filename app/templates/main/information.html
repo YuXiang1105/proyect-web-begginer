@@ -20,7 +20,7 @@
             Ferdinand Magellan
         </p>
     </div>
-    <img src="{{ url_for('static', filename='images/ship.jpg') }}" alt="spaceship">
+    <img src="../static/images/ship.jpg" alt="spaceship">
 </div>
 
 <div class="company_info">
@@ -33,7 +33,7 @@
 
 
         <div class="col-md-6 text-center">
-                <img src="{{ url_for('static', filename='images/myimg.png') }}" alt="Base" class="img-fluid rounded">
+            <img src="../static/images/myimg.png" alt="Base" class="img-fluid rounded">
         </div>
 
         <div class="col-md-6 ">
@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/information.css') }}">
+<link rel="stylesheet" href="../static/css/information.css">
 {% endblock %}
 
 {%block head %}

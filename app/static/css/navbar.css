@@ -199,3 +199,8 @@ img {
   animation-timeline: view();
   animation-range: entry 20%;
 }
+
+.logout{
+    margin-right: 20px;
+    color: black;
+}

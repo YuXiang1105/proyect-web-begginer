@@ -15,7 +15,7 @@
 
 <section class="container_index">
     <section class="img_index">
-        <img src="{{ url_for('static', filename='images/index_img.jpg') }}" alt="nebula">
+        <img src="../static/images/index_img.jpg" alt="nebula">
     </section>
     
     <section class="text_index">
@@ -101,7 +101,7 @@
             </div>
 
             <div class="col-md-6 text-center">
-                <img src="{{ url_for('static', filename='images/planet_origin.jpg') }}" alt="Base" class="img-fluid rounded">
+                <img src="../static/images/planet_origin.jpg" alt="Base" class="img-fluid rounded">
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
     {% endblock %}
 
     {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="../static/css/index.css">
     {% endblock %}
 
     {% block head %}
