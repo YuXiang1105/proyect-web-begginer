@@ -5,7 +5,7 @@
       <h1>Add a new creature!</h1>
       <!-- When we sumbit this form, it sends with a post method 
         and adds an alien to the array 'Aliens' -->
-      <form method="POST">
+      <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
           {{ form.name.label }}<br />
@@ -23,6 +23,10 @@
           {{ form.description.label }}<br />
           {{ form.description(style='width:100%; height:150px;') }}
         </p>
+        <p>
+          {{ form.image.label }}<br />
+          {{ form.image(style='width:100%; height:150px;') }}
+          </p>
          <div class="form-group">
         <label>Classes:</label>
         <div>

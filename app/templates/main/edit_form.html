@@ -5,7 +5,7 @@
       <h1>You are editing the alien: {{alien.name}} </h1>
       <p> If you leave a field blank, the previous value will be kept. </p>
 
-      <form method="POST">
+      <form method="POST", enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
           {{ form.name.label }}<br />
@@ -23,6 +23,10 @@
           {{ form.description.label }}<br />
           {{ form.description(style='width:100%; height:150px;') }}
         </p>
+                <p>
+          {{ form.image.label }}<br />
+          {{ form.image(style='width:100%; height:150px;') }}
+          </p>
          <div class="form-group">
         <label>Classes:</label>
         <div>

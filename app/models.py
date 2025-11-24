@@ -29,6 +29,9 @@ class Alien(db.Model):
     Danger =  db.Column(db.String(100), nullable=False)
     Origin = db.Column(db.String(100), nullable=True)
     Description = db.Column(db.Text, nullable=False)
+    
+    image = db.relationship('AlienImage', backref='alien', lazy=True)
+    
     classes = db.relationship(
     "AlienClass",
     secondary=alien_class_relation,
@@ -60,3 +63,8 @@ class User(db.Model, UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
  return User.query.get(int(user_id))
+
+class AlienImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(100),unique = True  ,nullable=False)
+    relic_id = db.Column(db.Integer, db.ForeignKey('alien.Id'), nullable=False) 

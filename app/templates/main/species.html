@@ -28,6 +28,13 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        
+{% for img in alien.image %}
+    <img src="{{ url_for('static', filename='user_images/' ~ img.filename) }}" 
+         alt="Imagen de {{ alien.Name }}">
+{% endfor %}
+
+
                         <h5 class="card-title">{{ alien.Name }}</h5>
                         <h6 class="card-subtitle mb-2">
                            Classes:<br>

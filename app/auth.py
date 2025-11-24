@@ -1,11 +1,14 @@
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from .forms import newClass, log_in_form, register_form
-from .models import Alien, AlienClass
+from .models import Alien, AlienClass, AlienImage
 from . import db
 from .models import User
 from urllib.parse import urlparse, urljoin
-
+from werkzeug.utils import secure_filename
+import os
+import uuid
+from flask import current_app
 auth = Blueprint("auth", __name__)
 
 def is_safe_url(target):
@@ -46,6 +49,25 @@ def form():
     form = newClass()
     form.class_imput.choices = [(classes.id, classes.name) for classes in AlienClass.query.order_by(AlienClass.name).all()]
     if form.validate_on_submit():
+        image = None
+        
+        if form.image.data:     
+            file = form.image.data   
+            original_filename = secure_filename(file.filename)
+            if not original_filename:
+                flash('No selected file', 'warning')
+                return render_template(url_for('auth.form'), form=form)
+            
+            unique_prefix = uuid.uuid4().hex #we create a unique prefix to avoid name conflicts
+            filename = f"{unique_prefix}_{original_filename}" #we create the final filename
+            upload_folder = current_app.config["IMG_FOLDERS"] #the folder for the storage
+            os.makedirs(upload_folder, exist_ok=True)#we create the folder if it does not exist
+            file_path = os.path.join(upload_folder, filename)#the complete path for the storage
+        
+            file.save(file_path)#we upload the image
+            image = filename  #we store the filename in the database
+        
+        
         #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
         new_alien = Alien(
             Name=form.name.data,
@@ -54,6 +76,11 @@ def form():
             Description=form.description.data,
             user_id=current_user.id
         )
+        if image is not None:
+            new_image = AlienImage(filename=image)
+            new_alien.image.append(new_image)
+
+            
         for class_id in form.class_imput.data:  
             new_class = AlienClass.query.get(class_id)
             new_alien.classes.append(new_class)

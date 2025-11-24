@@ -2,9 +2,13 @@ from flask import abort, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from .forms import newClass, log_in_form, register_form, editRelicForm
-from .models import Alien, AlienClass
+from .models import Alien, AlienClass, AlienImage
 from . import db
 from .models import User
+import os
+import uuid
+from flask import current_app
+from werkzeug.utils import secure_filename
 
 main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__)
@@ -34,7 +38,25 @@ def edit_alien(alien_id):
         abort(403)
     form = editRelicForm()
     form.class_imput.choices = [(c.id, c.name) for c in AlienClass.query.order_by(AlienClass.name).all()]
+    
     if form.validate_on_submit():
+        if form.image.data: #if we sumbit an image, we make the security checks
+            file = form.image.data
+            original_filename = secure_filename(file.filename)
+            if not original_filename:
+                flash('No selected file', 'warning')
+                return render_template('main/edit_form.html', form=form, alien=alien)
+        
+            unique_prefix = uuid.uuid4().hex
+            filename = f"{unique_prefix}_{original_filename}"
+            upload_folder = current_app.config["IMG_FOLDERS"]
+            os.makedirs(upload_folder, exist_ok=True)
+            file_path = os.path.join(upload_folder, filename)
+        
+            file.save(file_path)
+            new_image = AlienImage(filename=filename)
+            alien.image.append(new_image)
+        
         if form.name.data:
             alien.name = form.name.data
         if form.danger.data:
@@ -66,3 +88,9 @@ def delete_alien(alien_id):
     db.session.commit()
     flash('Alien deleted', 'danger')
     return redirect(url_for('main.species'))
+
+@main.route('/admin_edit', methods=['GET','POST'])
+@login_required
+def admin_edit():
+    if not current_user.is_admin:
+        abort(403)
