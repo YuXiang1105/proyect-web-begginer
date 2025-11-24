@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/navbar.css">
-    <link rel="icon" href="../static/images/navbar_logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/navbar_logo.png') }}">
     {% block styles %}
     <!-- Custom CSS for each page-->
     {% endblock %}
@@ -32,7 +32,7 @@
 
 
         <div class="photo">
-        <img src="../static/images/navbar_logo.png">
+        <img src="{{ url_for('static', filename='images/navbar_logo.png') }}">
         </div>
         <h1 class="mainText"><a href="{{url_for('main.index')}}">THE HYPERIUM HUB</a></h1>
 
@@ -44,7 +44,7 @@
         <a href="{{ url_for('auth.log_in') }}" class="login_button">LOG IN</a>
     {% else %}
         <div class="user">
-            <img src="../static/images/incons/user.png" alt="user icon" class="user-icon">
+            <img src="{{ url_for('static', filename='images/incons/user.png') }}" alt="user icon" class="user-icon">
             <span class="name">{{current_user.user}}</span>
         </div>
     {% endif %}
@@ -56,20 +56,20 @@
     <div class="sidebar" id = "sidebar">
         <ul>
             <li>
-                <img src="../static/images/incons/home.png" alt="home.png">
+                <img src="{{ url_for('static', filename='images/incons/home.png') }}" alt="home.png">
                 <a href="{{url_for('main.index')}}">Home</a>
 
             </li>
             <li>
-                <img src="../static/images/incons/question.png" alt="question.png">
+                <img src="{{ url_for('static', filename='images/incons/question.png') }}" alt="question.png">
                 <a href="{{url_for('main.information')}}">About</a>
             </li>
             <li>
-                <img src="../static/images/incons/bank.png" alt="bank.png">
+                <img src="{{ url_for('static', filename='images/incons/bank.png') }}" alt="bank.png">
                 <a href="{{url_for('main.species')}}">Species</a>
             </li>
             <li>
-                <img src="../static/images/incons/bank.png" alt="bank.png">
+                <img src="{{ url_for('static', filename='images/incons/bank.png') }}" alt="bank.png">
                 <a href="{{url_for('auth.form')}}">New Specimen</a>
             </li>
 
@@ -91,7 +91,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="../static/js/base.js"></script>
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 </body>
 
 </html>

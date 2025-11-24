@@ -40,3 +40,16 @@ class register_form(FlaskForm):
        user = User.query.filter_by(email=email.data).first()
        if user is not None:
           raise ValidationError('Please use a different email address.')
+     
+class editRelicForm(FlaskForm):
+     #no data required because the user might not want to change all the fields
+    name = StringField('Name')
+    danger = StringField('Danger')
+    origin = StringField('Origin')
+    description = TextAreaField('Description')
+    submit = SubmitField('Submit')
+    class_imput = SelectMultipleField(
+        "Classes",
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget()
+    )

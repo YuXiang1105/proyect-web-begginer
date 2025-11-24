@@ -45,6 +45,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=False)
     aliens = db.relationship("Alien", backref="creator", lazy=True)
     password_hash = db.Column(db.String)
+    is_admin = db.Column(db.Boolean, default=False)
     
     
     def set_password(self,password):

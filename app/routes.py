@@ -1,62 +1,14 @@
+from flask import abort
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from .forms import newClass, log_in_form, register_form
-from .models import Alien
+from .forms import newClass, log_in_form, register_form, editRelicForm
+from .models import Alien, AlienClass
 from . import db
 from .models import User
 
 main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__)
 
-#Data of the username, in the future, we will sumbit it to the database
-
-#I used an array to store every alien
-"""
-aliens = [
-    {"Name": "Xenomorph",
-         "Danger": "extreme",
-        "Class": "parasyte",
-        "Origin": "open space, not confirmed",
-        "Description": "The Xenomorph is a highly aggressive extraterrestrial species with a unique life cycle and a deadly hunting instinct. It is known for its biomechanical appearance, acid blood, and ability to adapt to various environments. The Xenomorph is a formidable predator that poses a significant threat to any life form it encounters.",
-    },
-    { 
-      
-        "Name": "Naytibas",
-        "Danger": "Extreme",
-        "Class": "Bio-mechanical",
-        "Origin": "Earth (post-human epoch)",
-        "Description": "The Naytibas are biomechanical alien organisms that invaded Earth, annihilating most of humanity. Their bodies fuse flesh and machinery, capable of regenerating and adapting to combat. They are driven by a hive-like will and worship an ancient entity known as the Elder Naytiba."
-    },
-    {
-        "Name": "Lord of Cinder",
-        "Danger": "Extreme",
-        "Class": "Humanoid",
-        "Origin": "Lordran",
-        "Description": "Specie ascended by absorbing a legendary artifact in Lordran, the First flame. After ascending, any specimen becomes extremely powerful, being considered even gods in their planets"
-    },
-    {
-        "Name": "Radiance",
-        "Danger": "Extreme",
-        "Class": "Parasyte",
-        "Origin": None,
-        "Description": "A specimen from the kindom of Hallownest, part of a planet of intelligent insects. Survives by invading the mind of other living being, and inducing them to a dream. If the subject is in the dream, Radiance has full control of the body, being able to destroy entire kindoms"
-    },
-    {
-        "Name": "Darkin",
-        "Danger": "High",
-        "Class": "Destructor",
-        "Origin": "Runaterra",
-        "Description": "From the planet Runaterra, they are considered fallen ascended in their worlds. Their minds have become corrupted by the endless wars in their lands. Known for their destructive nature, all darkins have been imprisioned in weapons"
-    },
-    {
-        "Name": "Na'vi",
-        "Danger": "Low",
-        "Class": "humanoid",
-        "Origin": "Pandora",
-        "Description": "The Na'vi, from Pandora, are considered one of the few intelligent species in their planet. They posses a 'braid' that connects to other creatures and plants of their planet. They have bioluminescent markings on their skin and emi-prehensile tails. Their appearence posses some feline-like physical traits,including large eyes and swiveling ears.    "
-    }
-]
-"""
 @main.route('/')
 @main.route('/index')
 def index():
@@ -72,3 +24,44 @@ def information():
 def species():
     aliens = Alien.query.all()
     return render_template('main/species.html', aliens = aliens )
+
+@main.route('/species/<alien_id>/edit', methods=['GET','POST'])
+@login_required
+def edit_alien(alien_id):
+    alien = Alien.query.get(alien_id)
+    if current_user.id != alien.user_id:
+        abort(403)
+    form = editRelicForm()
+    form.class_imput.choices = [(c.id, c.name) for c in AlienClass.query.order_by(AlienClass.name).all()]
+    if form.validate_on_submit():
+        if form.name.data:
+            alien.name = form.name.data
+        if form.danger.data:
+            alien.danger = form.danger.data
+        if form.origin.data:
+            alien.origin = form.origin.data
+        if form.description.data:
+            alien.description = form.description.data
+        
+        alien.classes.clear()#we delete the previous classes
+
+        for class_id in form.class_imput.data:
+            new_class = AlienClass.query.get(class_id)
+            alien.classes.append(new_class)
+        
+        db.session.commit()
+        flash('alien update succesful', 'success')
+        return redirect(url_for('main.species'))
+    return render_template('main/edit_form.html', form=form, alien=alien)
+
+
+@main.route('/species/<alien_id>/delete', methods=['GET','POST'])
+@login_required
+def delete_alien(alien_id):
+    alien = Alien.query.get_or_404(alien_id)
+    if current_user.id != alien.user_id:
+        abort(403)
+    db.session.delete(alien)
+    db.session.commit()
+    flash('Alien deleted', 'danger')
+    return redirect(url_for('main.species'))

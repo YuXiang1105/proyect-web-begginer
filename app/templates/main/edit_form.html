@@ -2,9 +2,9 @@
 {% block app_pagecontent %}
   <div class="container_form">
     <div class="inside">
-      <h1>Add a new creature!</h1>
-      <!-- When we sumbit this form, it sends with a post method 
-        and adds an alien to the array 'Aliens' -->
+      <h1>You are editing the alien: {{alien.name}} </h1>
+      <p> If you leave a field blank, the previous value will be kept. </p>
+
       <form method="POST">
         {{ form.hidden_tag() }}
         <p>
@@ -39,12 +39,14 @@
       </form>
     </div>
   </div>
+
 {% endblock %}
 
-{% block styles %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}" />
-{% endblock %}
+    {% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 
-{% block head %}
-  <title>New entity</title>
-{% endblock %}
+    {% endblock %}
+
+    {% block head %}
+    <title>Edit Alien</title>
+    {% endblock %}

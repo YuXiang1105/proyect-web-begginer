@@ -4,8 +4,16 @@ from .forms import newClass, log_in_form, register_form
 from .models import Alien, AlienClass
 from . import db
 from .models import User
+from urllib.parse import urlparse, urljoin
 
 auth = Blueprint("auth", __name__)
+
+def is_safe_url(target):
+    
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
 
 #auth blueprints routes
 @auth.route('/log_in',methods =['GET', 'POST'])
@@ -22,7 +30,10 @@ def log_in():
         if user and user.check_password(form.password.data):
             login_user(user)
             next_url = request.args.get("next")
-            flash("Login successful, welcome back!")
+            if not next_url or not is_safe_url(next_url):
+                flash("Login successful, welcome back!")
+                next_url = url_for("main.index")
+
             return redirect(next_url or url_for("main.index"))
         else:
             flash("Invalid email or password")
@@ -33,7 +44,7 @@ def log_in():
 @login_required #We need to be logged in to add an alien
 def form():
     form = newClass()
-    form.class_imput.choices = [(c.id, c.name) for c in AlienClass.query.order_by(AlienClass.name).all()]
+    form.class_imput.choices = [(classes.id, classes.name) for classes in AlienClass.query.order_by(AlienClass.name).all()]
     if form.validate_on_submit():
         #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
         new_alien = Alien(
@@ -44,8 +55,8 @@ def form():
             user_id=current_user.id
         )
         for class_id in form.class_imput.data:  
-            klass = AlienClass.query.get(class_id)
-            new_alien.classes.append(klass)
+            new_class = AlienClass.query.get(class_id)
+            new_alien.classes.append(new_class)
             
         db.session.add(new_alien)
         db.session.commit()
