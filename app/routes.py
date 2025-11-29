@@ -1,17 +1,15 @@
 from flask import abort, current_app
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from .forms import newClass, log_in_form, register_form, editRelicForm
+from .forms import editRelicForm, newClass
 from .models import Alien, AlienClass, AlienImage
 from . import db
-from .models import User
 import os
 import uuid
 from flask import current_app
 from werkzeug.utils import secure_filename
 
 main = Blueprint("main", __name__)
-auth = Blueprint("auth", __name__)
 
 @main.route('/')
 @main.route('/index')
@@ -30,6 +28,56 @@ def species():
     aliens = Alien.query.paginate(page=page, per_page=current_app.config['ALIENS_PER_PAGE'], error_out=False)
     return render_template('main/species.html', aliens = aliens )
 
+@main.route('/form' ,methods =['GET', 'POST'])
+@login_required #We need to be logged in to add an alien
+def form():
+    form = newClass()
+    form.class_imput.choices = [(classes.id, classes.name) for classes in AlienClass.query.order_by(AlienClass.name).all()]
+    if form.validate_on_submit():
+        image = None
+        
+        if form.image.data:     
+            file = form.image.data   
+            original_filename = secure_filename(file.filename)
+            if not original_filename:
+                flash('No selected file', 'warning')
+                return render_template(url_for('auth.form'), form=form)
+            
+            unique_prefix = uuid.uuid4().hex #we create a unique prefix to avoid name conflicts
+            filename = f"{unique_prefix}_{original_filename}" #we create the final filename
+            upload_folder = current_app.config["IMG_FOLDERS"] #the folder for the storage
+            os.makedirs(upload_folder, exist_ok=True)#we create the folder if it does not exist
+            file_path = os.path.join(upload_folder, filename)#the complete path for the storage
+        
+            file.save(file_path)#we upload the image
+            image = filename  #we store the filename in the database
+        
+        
+        #When sumbitting, I append the we alien to the 'Alien' array and redirects and refresh the page 'species'
+        new_alien = Alien(
+            Name=form.name.data,
+            Danger=form.danger.data,
+            Origin=form.origin.data,
+            Description=form.description.data,
+            user_id=current_user.id
+        )
+        if image is not None:
+            new_image = AlienImage(filename=image)
+            new_alien.image.append(new_image)
+
+            
+        for class_id in form.class_imput.data:  
+            new_class = AlienClass.query.get(class_id)
+            new_alien.classes.append(new_class)
+            
+        db.session.add(new_alien)
+        db.session.commit()
+        
+        return redirect(url_for('main.species'))
+        
+    return render_template('main/form.html', form=form)
+
+#route for editing an alien, only possible by admin and the user that created it
 @main.route('/species/<alien_id>/edit', methods=['GET','POST'])
 @login_required
 def edit_alien(alien_id):
@@ -37,16 +85,21 @@ def edit_alien(alien_id):
     if current_user.id != alien.user_id:
         abort(403)
     form = editRelicForm()
-    form.class_imput.choices = [(c.id, c.name) for c in AlienClass.query.order_by(AlienClass.name).all()]
+    form.class_imput.choices = [(alienCLass.id, alienCLass.name) for alienCLass in AlienClass.query.order_by(AlienClass.name).all()]
     
     if form.validate_on_submit():
         if form.image.data: #if we sumbit an image, we make the security checks
-            file = form.image.data
+            file = form.image.data 
             original_filename = secure_filename(file.filename)
             if not original_filename:
                 flash('No selected file', 'warning')
                 return render_template('main/edit_form.html', form=form, alien=alien)
-        
+            #We delete previous images, only an image can be displayed at the same time
+            if alien.image:
+                for img in alien.image:
+                    os.remove(os.path.join(current_app.config["IMG_FOLDERS"], img.filename))
+                    db.session.delete(img)
+            #security and unique filename
             unique_prefix = uuid.uuid4().hex
             filename = f"{unique_prefix}_{original_filename}"
             upload_folder = current_app.config["IMG_FOLDERS"]
@@ -57,14 +110,17 @@ def edit_alien(alien_id):
             new_image = AlienImage(filename=filename)
             alien.image.append(new_image)
         
+        
+        
         if form.name.data:
-            alien.name = form.name.data
+            alien.Name = form.name.data
         if form.danger.data:
-            alien.danger = form.danger.data
+            alien.Danger = form.danger.data
         if form.origin.data:
-            alien.origin = form.origin.data
+            alien.Origin = form.origin.data
         if form.description.data:
-            alien.description = form.description.data
+            alien.Description = form.description.data
+
         
         alien.classes.clear()#we delete the previous classes
 
@@ -75,9 +131,10 @@ def edit_alien(alien_id):
         db.session.commit()
         flash('alien update succesful', 'success')
         return redirect(url_for('main.species'))
-    return render_template('main/edit_form.html', form=form, alien=alien)
+    return render_template("main/edit_form.html", form=form, alien=alien)
 
 
+#route for deleting an alien, only possible by admin and the user that created it
 @main.route('/species/<alien_id>/delete', methods=['GET','POST'])
 @login_required
 def delete_alien(alien_id):
@@ -89,8 +146,5 @@ def delete_alien(alien_id):
     flash('Alien deleted', 'danger')
     return redirect(url_for('main.species'))
 
-@main.route('/admin_edit', methods=['GET','POST'])
-@login_required
-def admin_edit():
-    if not current_user.is_admin:
-        abort(403)
+
+

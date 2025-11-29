@@ -1,54 +1,70 @@
 {% extends 'base.html' %}
 {% block app_pagecontent %}
-  <div class="container_form">
-    <div class="inside">
-      <h1>You are editing the alien: {{alien.name}} </h1>
-      <p> If you leave a field blank, the previous value will be kept. </p>
+<div class="d-flex justify-content-center align-items-center vh-100 mt-4">
+<div class="container my-4 text-white">
+    <h3 >You are editing the alien: {{ alien.Name }}</h3>
+    <p >If you leave a field blank, the previous value will be kept.</p>
 
-      <form method="POST", enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <p>
-          {{ form.name.label }}<br />
-          {{ form.name(style='width:100%;') }}
-        </p>
-        <p>
-          {{ form.origin.label }}<br />
-          {{ form.origin(style='width:100%;') }}
-        </p>
-        <p>
-          {{ form.danger.label }}<br />
-          {{ form.danger(style='width:100%;') }}
-        </p>
-        <p>
-          {{ form.description.label }}<br />
-          {{ form.description(style='width:100%; height:150px;') }}
-        </p>
-                <p>
-          {{ form.image.label }}<br />
-          {{ form.image(style='width:100%; height:150px;') }}
-          </p>
-         <div class="form-group">
-        <label>Classes:</label>
-        <div>
+
+        <div class="form-group mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder=alien.Name) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.origin.label(class="form-label") }}
+            {{ form.origin(class="form-control", placeholder=alien.Origin or '') }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.danger.label(class="form-label") }}
+            {{ form.danger(class="form-control", placeholder=alien.Danger) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control", rows="4", placeholder=alien.Description) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
+        </div>
+        
+        {%if class_imput %}
+        <div class="form-group mb-3">
+            <label class="form-label">Classes:</label>
             {% for classes in form.class_imput %}
                 <div class="form-check">
-                    {{ classes(class="form-check-input") }}
-                    {{ classes.label(class="form-check-label") }}
+                    {{ classes(class="form-check-input", id="class-{{ loop.index }}") }}
+                    {{ classes.label(class="form-check-label", for="class-{{ loop.index }}") }}
                 </div>
             {% endfor %}
         </div>
-         </div>
+        {% endif %}
 
-        <p>{{ form.submit() }}</p>
-      </form>
-    </div>
-  </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+        <a href="{{ url_for('main.species') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+</div>
+
 
 {% endblock %}
 
-    {% block styles %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}"/>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
     {% endblock %}
 
     {% block head %}

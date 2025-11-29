@@ -1,5 +1,5 @@
 .title{
-    margin-top: 90px;
+    margin-top: 60px;
     text-align: center;
     color:#f0f0ff;
 }
@@ -39,4 +39,19 @@
 .pagination span {
   font-weight: bold;
   color: #48b2c0;
+}
+
+
+
+.imagecontainer {
+    width: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: auto;
+    border-radius: 15px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+    margin-bottom: 20px;
 }

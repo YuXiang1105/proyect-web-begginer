@@ -1,52 +1,59 @@
 {% extends 'base.html' %}
 {% block app_pagecontent %}
-  <div class="container_form">
-    <div class="inside">
-      <h1>Welcome back!</h1>
+<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="container my-4 text-white">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="mb-3 text-white">Login</h3>
 
-      {% with messages=get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <ul>
-            {% for category, message in messages %}
-              <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endwith %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-      <!-- We sumbit and change the object User -->
-      <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>
-          {{ form.user.label }}<br />
-          {{ form.user(style='width:100%;') }}
-        </p>
-        <p>
-          {{ form.email.label }}<br />
-          {{ form.email(style='width:100%;') }}
-        </p>
-        <p>
-          {{ form.password.label }}<br />
-          {{ form.password(style='width:100%;') }}
-        </p>
+            <form method="POST">
+                {{ form.hidden_tag() }}
 
-        <p>{{ form.submit() }}</p>
-      </form>
-      <p>
-        you don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
-      </p>
+                <div class="mb-3">
+                    Username
+                    {{ form.user(class="form-control") }}
+                    {% for error in form.user.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    Email
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    Password
+                    {{ form.password(class="form-control") }}
+                    {% for error in form.password.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <p class="mt-3 text-white">
+                Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
+            </p>
+        </div>
     </div>
-  </div>
-
-  {% if form.email.errors %}
-    {% for error in errors %}
-      <p>{{ error }}</p>
-    {% endfor %}
-  {% endif %}
-{% endblock %}
-
-{% block styles %}
-  <link rel="stylesheet" href="../static/css/form.css" />
+</div>
+</div>
 {% endblock %}
 
 {% block head %}

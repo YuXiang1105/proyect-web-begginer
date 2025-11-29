@@ -29,8 +29,8 @@ class Alien(db.Model):
     Danger =  db.Column(db.String(100), nullable=False)
     Origin = db.Column(db.String(100), nullable=True)
     Description = db.Column(db.Text, nullable=False)
-    
-    image = db.relationship('AlienImage', backref='alien', lazy=True)
+    #if we don't put cascade, the page will still storage the image even if we delete the alien
+    image = db.relationship('AlienImage', backref='alien', lazy=True, cascade="all, delete-orphan")
     
     classes = db.relationship(
     "AlienClass",

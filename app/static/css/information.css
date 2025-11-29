@@ -11,14 +11,12 @@
 .what_we_do {
   border-top: 2px solid transparent;
   background: transparent;
-  padding-top: 20px;
   padding-bottom: 5px;
   height: auto;
 
   color: white;
   font-family: 'Orbitron', sans-serif;
   text-align: center;
-  margin-top: 40px;
    box-shadow: 0 0 12px white;
 
 }

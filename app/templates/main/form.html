@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block app_pagecontent %}
+<div class="d-flex justify-content-center align-items-center vh-100 mt-4">
+<div class="container my-4 text-white">
+    <h3>Add a new creature!</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Enter name") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.origin.label(class="form-label") }}
+            {{ form.origin(class="form-control", placeholder="Enter origin") }}
+        </div>
+¡
+        <div class="mb-3">
+            {{ form.danger.label(class="form-label") }}
+            {{ form.danger(class="form-control", placeholder="Enter danger level") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control", rows="4", placeholder="Enter description") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
+        </div>
+        <!-- if no classes, not option to select -->
+        {%if not form.class_imput %}
+        <div class="mb-3">
+
+
+          
+            <label class="form-label">Classes:</label>
+            {% for classes in form.class_imput %}
+
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+  <label class="form-check-label" for="exampleRadios1">
+                    {{ classes(class="form-check-input", id="class-{{ loop.index }}") }}
+                    {{ classes.label(class="form-check-label", for="class-{{ loop.index }}") }}
+  </label>
+</div>
+
+            
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+        <a href="{{ url_for('main.species') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+</div>
+
+
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="../static/css/form.css" />
+  
+{% endblock %}
+
+{% block head %}
+  <title>New entity</title>
+{% endblock %}

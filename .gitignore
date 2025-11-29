@@ -2,3 +2,4 @@
 __pycache__/
 .pytest_cache/
 instance/
+/app/static/user_images/

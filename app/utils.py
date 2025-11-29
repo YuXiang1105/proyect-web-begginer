@@ -1,0 +1,20 @@
+from functools import wraps
+from os import abort
+from urllib.parse import urlparse, urljoin
+from flask import request
+from flask_login import current_user
+
+def is_safe_url(target):
+    
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)
+        return f(*args, **kwargs)
+    return decorated_function

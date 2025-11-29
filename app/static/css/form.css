@@ -1,4 +1,6 @@
 .container_form {
+    margin-top: 50px;
+    margin-bottom: 30px;
     position: relative;
     width: 100%;
     min-height: 100vh;

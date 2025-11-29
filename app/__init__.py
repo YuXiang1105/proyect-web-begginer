@@ -19,9 +19,11 @@ def create_app(config = DevConfig):
     db.init_app(app)
     #we import the blueprints into the app
     from .routes import main
-    from .auth import auth as authentication 
+    from .auth.auth import auth as authentication 
+    from .admin import administrator 
     app.register_blueprint(main)  
     app.register_blueprint(authentication)
+    app.register_blueprint(administrator)
     with app.app_context():
         db.create_all()
     return app
