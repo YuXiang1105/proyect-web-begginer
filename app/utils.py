@@ -1,5 +1,5 @@
 from functools import wraps
-from os import abort
+from flask import abort
 from urllib.parse import urlparse, urljoin
 from flask import request
 from flask_login import current_user

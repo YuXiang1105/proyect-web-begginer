@@ -67,4 +67,4 @@ def logout():
     if not next_url or not is_safe_url(next_url):
         next_url = url_for("main.index")
         return redirect(next_url or url_for("main.index"))   
-    return redirect(url_for('main.index'), current_user = current_user)
+    return redirect(url_for('main.index'))
