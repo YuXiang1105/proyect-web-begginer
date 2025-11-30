@@ -51,6 +51,15 @@
                             {{ alien.Description }}
                         </p>
 
+{% if alien.classes %}
+<h6 class="card-subtitle fw-semibold mb-2 text-primary text-white">Classes:</h6>
+<p class="mb-2 text-white">
+    {% for cls in alien.classes %}
+        {{ cls.name }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+</p>
+{% endif %}
+
                         {% if current_user.id == alien.user_id or current_user.is_admin%}
                         <button type="button" class="btn btn-outline-primary">
                             <a href="{{ url_for('main.edit_alien', alien_id=alien.Id,  next=request.path) }}">Edit</a>

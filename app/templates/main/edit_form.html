@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block app_pagecontent %}
 <div class="d-flex justify-content-center align-items-center vh-100 mt-4">
-<div class="container my-4 text-white">
+<div class="container my-4 text-white" style="padding-top: 80px;">
     <h3 >You are editing the alien: {{ alien.Name }}</h3>
     <p >If you leave a field blank, the previous value will be kept.</p>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" >
         {{ form.hidden_tag() }}
 
         <div class="form-group mb-3">
@@ -45,13 +45,36 @@
         </div>
         {% endif %}
 
+        <!-- if no classes, not option to select -->
+        {%if form.class_imput %}
+        <div class="mb-3">
+
+
+          
+            <label class="form-label">Classes:</label>
+            {% for classes in form.class_imput %}
+
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+  <label class="form-check-label" for="exampleRadios1">
+                    {{ classes(class="form-check-input", id="class-{{ loop.index }}") }}
+                    {{ classes.label(class="form-check-label", for="class-{{ loop.index }}") }}
+  </label>
+</div>
+
+            
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
         <a href="{{ url_for('main.species') }}" class="btn btn-secondary ms-2">Cancel</a>
     </form>
 </div>
 </div>
-
-
+<div style = "padding-bottom : 100px"> a
+     </div>
 {% endblock %}
 
 

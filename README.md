@@ -27,4 +27,6 @@ For images I used different sources (no copyright):
 
 For the cards, the aliens are from the next games/films:
 -Alien: isolation, Stellar blade, Hollow Knight, Dark Souls I, League of Legends, Avatar.
+
+This code was mostly written by me, some of the code was AI assisted with the AI of VSCode
       
