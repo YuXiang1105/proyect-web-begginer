@@ -5,10 +5,10 @@ from app.models import User
  
      #form for the log in
 class log_in_form(FlaskForm):
-     user = StringField('user', validators=[DataRequired()])
-     email = EmailField('email', validators=[DataRequired(), Email()])
-     password = PasswordField("password" ,validators=[DataRequired()])
-     submit = SubmitField('submit')
+    user = StringField('Username', validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField('Login')
+
      
 class register_form(FlaskForm):
      user = StringField('user', validators=[DataRequired()])

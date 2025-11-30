@@ -2,6 +2,8 @@ from . import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import *
 from flask_login import UserMixin
+import hashlib
+from urllib.parse import urlencode
 
 class AlienClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +33,6 @@ class Alien(db.Model):
     Description = db.Column(db.Text, nullable=False)
     #if we don't put cascade, the page will still storage the image even if we delete the alien
     image = db.relationship('AlienImage', backref='alien', lazy=True, cascade="all, delete-orphan")
-    
     classes = db.relationship(
     "AlienClass",
     secondary=alien_class_relation,
@@ -46,7 +47,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
-    aliens = db.relationship("Alien", backref="creator", lazy=True)
+    aliens = db.relationship("Alien", backref="creator", lazy=True, cascade='all, delete-orphan')
     password_hash = db.Column(db.String)
     is_admin = db.Column(db.Boolean, default=False)
     
@@ -59,6 +60,12 @@ class User(db.Model, UserMixin):
     
     def __repr__(self):
         return f'User: {self.email}'
+    
+    def avatar(self, size=40):
+        email_encoded = self.email.lower().encode('utf-8')
+        email_hash = hashlib.sha256(email_encoded).hexdigest()
+        query_params = urlencode({'d': 'identicon', 's': size})
+        return f"https://www.gravatar.com/avatar/{email_hash}?{query_params}"
     
 @login_manager.user_loader
 def load_user(user_id):

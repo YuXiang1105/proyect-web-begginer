@@ -3,27 +3,22 @@
 html, body {
     height: 100%;
     margin: 0;
-    padding: 0;
     padding-top: 20px;
 }
 
 
 
-.footer-fixed {
-    margin-top: auto;
-}
 
-body{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+
+body {
     font-family: Arial, Helvetica, sans-serif;
     background-image: url("/static/images/backgrounds/background_index.jpg");
-     background-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; 
+    background-attachment: fixed;
 }
+
 /*hole navbar container*/
 .container_navbar {
     z-index: 1000;
@@ -198,11 +193,14 @@ body{
 .user-icon {
     width: 30px;
     height: 30px;
+    border-radius: 50%;
 }
 
 .name {
     font-size: 18px;
     font-weight: 600;
+    color: black;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 @keyframes reveal {
@@ -218,4 +216,10 @@ img {
 .logout{
     margin-right: 20px;
     color: black;
+}
+
+
+.page_content_bottom {
+    margin-bottom: 80px;
+    padding-bottom: 60px;
 }

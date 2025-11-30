@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block app_pagecontent %}
+
+<h2 class="mb-4 mt-5 text-white ">Admin User Management</h2>
+ {% for user in users %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Username: {{ user.user }}</h5>
+            <p class="card-text">Email: {{ user.email }}</p>
+            <p class="card-text">Rank: 
+                {% if user.is_admin %}
+                    Admin
+                {% else %}
+                    Member
+                {% endif %}
+            </p>
+            <form action="{{ url_for('administrator.delete_user', id=user.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                <button type="submit" class="btn btn-danger">Delete User</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="pagination mb-5 text-white justify-content-center">
+  {% if users.has_prev %}
+    <a href="{{ url_for('administrator.manage_admin', page=users.prev_num) }}">Previous</a>
+  {% endif %}
+
+  <span>&nbsp;Page {{ users.page }} of {{ users.pages }}&nbsp;</span>
+
+  {% if users.has_next %}
+    <a href="{{ url_for('administrator.manage_admin', page=users.next_num) }}">Next</a>
+  {% endif %}
+</div>
+{%endblock%}

@@ -23,8 +23,7 @@
 
 
 
-<body>
-
+<body class="mb-5">
     <nav class="container_navbar">
 
         <div class="menu_container" id="menu_container">
@@ -45,15 +44,15 @@
     <!--If the username is none, in the navbar, 
     it will display a button with log in.However, if we have a username, it displays the name with a small logo -->
     {% if current_user.is_authenticated == False %}
-        <a href="{{ url_for('auth.log_in') }}" class="login_button">LOG IN</a>
+        <a href="{{ url_for('auth.log_in', next=request.path) }}" class="login_button">LOG IN</a>
     {% else %}
-        <div class="user">
-            <img src="{{ url_for('static', filename='images/incons/user.png') }}" alt="user icon" class="user-icon">
+        <a href="{{ url_for('main.profile') }}" class="user_profile_link user">
+            <img src="{{ current_user.avatar() }}" alt="user icon" class="user-icon">
             <span class="name">{{current_user.user}}</span>
-        </div>
+        </a>
 
         <div class="logout">
-            <a href="{{ url_for('auth.logout') }}" class="logout_button">LOG OUT</a>
+            <a href="{{ url_for('auth.logout', next=request.path) }}" class="logout_button">LOG OUT</a>
     {% endif %}
 </div>
 
@@ -77,23 +76,42 @@
             </li>
             <li>
                 <img src="{{ url_for('static', filename='images/incons/bank.png') }}" alt="bank.png">
-                <a href="{{url_for('main.form')}}">New Specimen</a>
+                <a href="{{url_for('main.form', next=request.path)}}">New Specimen</a>
             </li>
 
 
         </ul>
     </div>
+<div class = "page_content_bottom">
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-5">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
 
     {% block app_pagecontent %}
     {% endblock %}
+</div>
 
-<footer class="footer-fixed bg-secondary text-white py-3">
+    
+<footer class="fixed-bottom bg-secondary text-white py-3 custom-footer">
   <div class="container d-flex justify-content-between align-items-center">
     <span>Database last updated: year 138900 since Big Bang</span>
     <button id="go_top">GO TO TOP</button>
     <span>For the sake of humanity</span>
   </div>
 </footer>
+
 
 
 

@@ -7,11 +7,12 @@ class Config():
     SQLALCHEMY = False
     ALIENS_PER_PAGE = 20
     IMG_FOLDERS = os.path.join(mydir, "app", "static", "user_images") #storage the images in the static folder, in a new folder
-    
+    USERS_PER_PAGE = 20
 class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///aliens.db'
     DEBUG = True
     ALIENS_PER_PAGE = 6
+    USERS_PER_PAGE = 10
     IMG_FOLDERS = os.path.join(mydir, "app", "static", "user_images") #storage the images in the static folder, in a new folder
 
 class TestConfig(Config):
@@ -19,3 +20,4 @@ class TestConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     ALIENS_PER_PAGE = 6
+    USERS_PER_PAGE = 10

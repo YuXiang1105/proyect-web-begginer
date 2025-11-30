@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block app_pagecontent %}
+<section class="h-100 gradient-custom-2 mb-5">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-9 col-xl-8">
+
+        <div class="card">
+
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="{{ current_user.avatar(80) }}" alt="avatar" class="rounded-circle">
+                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                   style="width: 150px; z-index: 1">
+            </div>
+
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5>Username : {{ current_user.user }}</h5>
+            </div>
+          </div>
+
+          <div class="p-4 text-black bg-body-tertiary">
+            <div class="d-flex justify-content-end text-center py-1 text-body">
+              <div>
+                <p class="mb-1 h5">Email</p>
+                <p class="small text-muted mb-0">{{ current_user.email }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-4 text-black">
+
+            <div class="mb-5 text-body">
+              <p class="lead fw-normal mb-1">About</p>
+              <div class="p-4 bg-body-tertiary">
+                <p class="font-italic mb-1">Rank:
+                  {% if current_user.is_admin %}
+                    Admin<br>
+                    To manage users, please visit the <a href="{{ url_for('administrator.manage_admin') }}">Admin User Management</a> page
+                  {% else %}
+                    Member
+                  {% endif %}
+                </p>
+
+                <p class="font-italic mb-1">
+                  Number of contributions to the Alien Database: {{ current_user.aliens|length }}
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+              <p class="lead fw-normal mb-0">Aliens added to the database:</p>
+            </div>
+
+            <div class="own_costum_cards">
+              <div class="container mt-4">
+                <div class="row">
+
+                  {% for alien in aliens %}
+                  <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                      <div class="card-body text-center">
+
+                        <h5 class="card-title fw-bold mb-3">{{ alien.Name }}</h5>
+
+                        {% for img in alien.image %}
+                        <img class="img-fluid mb-3 rounded imagecontainer"
+                             src="{{ url_for('static', filename='user_images/' ~ img.filename) }}"
+                             alt="Image of {{ alien.Name }}">
+                        {% endfor %}
+
+                        {% if alien.Class %}
+                        <h6 class="card-subtitle fw-semibold mb-2 text-primary">Classes:</h6>
+                        <p class="mb-2 text-muted">
+                          {% for classes in alien.classes %}
+                            {{ classes.name }}{% if not loop.last %}, {% endif %}
+                          {% endfor %}
+                        </p>
+                        {% endif %}
+
+                        <p class="card-text mb-2">
+                          <span class="fw-semibold">Origin:</span>
+                          {{ alien.Origin or 'Unknown' }}
+                        </p>
+
+                        <p class="card-text mb-2">
+                          <span class="fw-semibold">Danger:</span> {{ alien.Danger }}
+                        </p>
+
+                        <p class="card-text">
+                          <span class="fw-semibold">Description:</span> {{ alien.Description }}
+                        </p>
+
+                        {% if current_user.id == alien.user_id %}
+                        <a href="{{ url_for('main.edit_alien', alien_id=alien.Id) }}"
+                           class="btn btn-outline-primary">Edit</a>
+
+                        <a href="{{ url_for('main.delete_alien', alien_id=alien.Id) }}"
+                           class="btn btn-outline-primary">Delete</a>
+                        {% endif %}
+
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div> 
+    </div>
+  </div> 
+</section>
+{% endblock %}

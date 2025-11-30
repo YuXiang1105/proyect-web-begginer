@@ -14,13 +14,14 @@ def create_app(config = DevConfig):
     app = Flask(__name__)
     #we put the desired config to the ap
     app.config.from_object(config)
+    login_manager.login_message_category = "warning"
     login_manager.init_app(app)
     #we connect the database to the app
     db.init_app(app)
     #we import the blueprints into the app
     from .routes import main
     from .auth.auth import auth as authentication 
-    from .admin import administrator 
+    from .admin.admin import administrator
     app.register_blueprint(main)  
     app.register_blueprint(authentication)
     app.register_blueprint(administrator)

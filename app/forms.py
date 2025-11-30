@@ -23,7 +23,7 @@ class editRelicForm(FlaskForm):
     )
     
 #form for adding a new alien
-class newClass(FlaskForm):
+class newClassAlien(FlaskForm):
      #It is not necessary to upload an image for a new relic
     image = FileField('image', validators=[FileAllowed(["jpg", "jpeg", "png", "gif"], "invalid file type")])
     name = StringField('Name', validators=[DataRequired()])

@@ -16,21 +16,23 @@ def log_in():
         return redirect(url_for('main.index')) #if already logged in, redirect to home
     
     if form.validate_on_submit():
-        email = form.email.data.lower().strip()
-        user = User.query.filter_by(email=email).first()
+        user_form = form.user.data.strip()  
+        user = User.query.filter_by(user=user_form).first()
+
         
         if user and user.check_password(form.password.data):
             login_user(user)
             next_url = request.args.get("next")
+            flash("Login successful!", "success")
             if not next_url or not is_safe_url(next_url):
-                flash("Login successful, welcome back!")
+                
                 next_url = url_for("main.index")
 
             return redirect(next_url or url_for("main.index"))
         else:
-            flash("Invalid email or password")
+            flash("Invalid email or password", "danger")
     
-    return render_template("auth/log_in.html", form=form)
+    return render_template("auth/log_in.html", form=form, current_user = current_user)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -39,23 +41,30 @@ def register():
         user = form.user.data
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
-            flash('User already exists')
+            flash('User already exists', "warning")
         else: 
             NewUser = User(email= form.email.data, user=user)
             NewUser.set_password(form.password.data)
             db.session.add(NewUser)
             db.session.commit()
             login_user(NewUser)
-            flash('Registration successful')
             
-        
+        flash('Registration successful', 'success')
+        next_url = request.args.get("next")
+        if not next_url or not is_safe_url(next_url):
+            next_url = url_for("main.index")
+            return redirect(next_url or url_for("main.index"))
         return redirect(url_for("main.index"))    
     
-    return render_template('auth/register.html', form = form)
+    return render_template('auth/register.html', form = form, current_user = current_user)
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('You have been logged out successfully', 'info')
-    return redirect(url_for('main.index'))
+    next_url = request.args.get("next")
+    if not next_url or not is_safe_url(next_url):
+        next_url = url_for("main.index")
+        return redirect(next_url or url_for("main.index"))   
+    return redirect(url_for('main.index'), current_user = current_user)

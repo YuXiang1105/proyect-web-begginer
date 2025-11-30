@@ -1,7 +1,9 @@
 from flask import abort, current_app
 from flask_login import login_required, current_user
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from .forms import editRelicForm, newClass
+
+from app.utils import is_safe_url
+from .forms import editRelicForm, newClassAlien
 from .models import Alien, AlienClass, AlienImage
 from . import db
 import os
@@ -15,23 +17,23 @@ main = Blueprint("main", __name__)
 @main.route('/index')
 def index():
     aliens = Alien.query.all()
-    return render_template('main/index.html', aliens = aliens)
+    return render_template('main/index.html', aliens = aliens, current_user = current_user)
 
 
 @main.route('/information')
 def information():
-    return render_template('main/information.html')
+    return render_template('main/information.html', current_user = current_user)
 
 @main.route('/species')
 def species():
     page = request.args.get('page', 1, type=int)
     aliens = Alien.query.paginate(page=page, per_page=current_app.config['ALIENS_PER_PAGE'], error_out=False)
-    return render_template('main/species.html', aliens = aliens )
+    return render_template('main/species.html', aliens = aliens , current_user = current_user)
 
 @main.route('/form' ,methods =['GET', 'POST'])
 @login_required #We need to be logged in to add an alien
 def form():
-    form = newClass()
+    form = newClassAlien()
     form.class_imput.choices = [(classes.id, classes.name) for classes in AlienClass.query.order_by(AlienClass.name).all()]
     if form.validate_on_submit():
         image = None
@@ -72,17 +74,22 @@ def form():
             
         db.session.add(new_alien)
         db.session.commit()
+        flash('New alien added successfully!', 'success')
         
-        return redirect(url_for('main.species'))
+        next_url = request.args.get("next")
+        if not next_url or not is_safe_url(next_url):
+            next_url = url_for("main.index")
+            
+        return redirect(next_url or url_for('main.species'))
         
-    return render_template('main/form.html', form=form)
+    return render_template('main/form.html', form=form, current_user = current_user)
 
 #route for editing an alien, only possible by admin and the user that created it
 @main.route('/species/<alien_id>/edit', methods=['GET','POST'])
 @login_required
 def edit_alien(alien_id):
     alien = Alien.query.get(alien_id)
-    if current_user.id != alien.user_id:
+    if current_user.id != alien.user_id and not current_user.is_admin:
         abort(403)
     form = editRelicForm()
     form.class_imput.choices = [(alienCLass.id, alienCLass.name) for alienCLass in AlienClass.query.order_by(AlienClass.name).all()]
@@ -130,8 +137,13 @@ def edit_alien(alien_id):
         
         db.session.commit()
         flash('alien update succesful', 'success')
-        return redirect(url_for('main.species'))
-    return render_template("main/edit_form.html", form=form, alien=alien)
+        next_url = request.args.get("next")
+        if not next_url or not is_safe_url(next_url):
+            flash("Login successful, welcome back!")
+            next_url = url_for("main.index")
+        
+        return redirect(next_url or url_for('main.species'))
+    return render_template("main/edit_form.html", form=form, alien=alien, current_user = current_user)
 
 
 #route for deleting an alien, only possible by admin and the user that created it
@@ -139,12 +151,22 @@ def edit_alien(alien_id):
 @login_required
 def delete_alien(alien_id):
     alien = Alien.query.get_or_404(alien_id)
-    if current_user.id != alien.user_id:
+    if current_user.id != alien.user_id and not current_user.is_admin:
         abort(403)
     db.session.delete(alien)
     db.session.commit()
     flash('Alien deleted', 'danger')
-    return redirect(url_for('main.species'))
+    next_url = request.args.get("next")
+    if not next_url or not is_safe_url(next_url):
+        next_url = url_for("main.index")
+    return redirect(next_url or url_for('main.species'))
+
+@main.route('/profile', methods=['GET','POST'])
+@login_required
+def profile():
+    
+    user_aliens = Alien.query.filter_by(user_id=current_user.id).all()
+    return render_template('main/profile.html', aliens=user_aliens,  current_user = current_user)
 
 
 
