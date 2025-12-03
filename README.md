@@ -1,8 +1,8 @@
-Hi, welcome my first submission. The details below:
+Hi, welcome my first submission. 
+Made with flask and bootstrap
+The details below:
 Full name:Yu Xiang Yang Xu
-Std.number:40500199
-Theme: The Xenovault
-
+My teacher: Dr. Giuseppe Trombino
 
 Before using, follow the next steps:
 1-Install the virtual enviroment with the next commands:
